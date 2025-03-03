@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === "production") {
     cors({
       origin:
         process.env.FRONTEND_URL ||
-        "https://inventory-application-front-end-taha.vercel.app/",
+        "https://inventory-application-front-end-taha.vercel.app",
       credentials: true,
     })
   );
