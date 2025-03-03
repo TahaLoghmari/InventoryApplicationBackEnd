@@ -1,4 +1,3 @@
-const path = require("node:path");
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -11,7 +10,9 @@ require("dotenv").config();
 if (process.env.NODE_ENV === "production") {
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL || "https://your-frontend-domain.com",
+      origin:
+        process.env.FRONTEND_URL ||
+        "https://inventory-application-frontend-taha.vercel.app",
       credentials: true,
     })
   );
@@ -26,17 +27,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", gamesRouter);
 app.use("/api", categoriesRouter);
 
-// Only serve static files in production
-if (process.env.NODE_ENV === "production") {
-  const assetsPath = path.join(__dirname, "public");
-  const clientDistPath = path.join(__dirname, "../frontend/dist");
-  app.use(express.static(assetsPath));
-  app.use(express.static(clientDistPath));
-  // Catch-all route for SPA
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(clientDistPath, "index.html"));
-  });
-}
+// Simple health check route
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "API is running" });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
