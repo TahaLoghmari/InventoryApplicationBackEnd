@@ -3,11 +3,13 @@ const app = express();
 const cors = require("cors");
 const gamesRouter = require("./routers/gamesRouter");
 const categoriesRouter = require("./routers/categoriesRouter");
+const seedDatabase = require("./models/db/seedDb");
 
 require("dotenv").config();
 
 // Middleware
 if (process.env.NODE_ENV === "production") {
+  seedDatabase().catch(console.error);
   app.use(
     cors({
       origin:
